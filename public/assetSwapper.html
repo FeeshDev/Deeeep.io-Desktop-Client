@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="nav">
+      <h1>Asset-Swapper</h5> 
+    </div>
+    <div class="main">
+      <div class="skin-div">
+        <label class="skin-label" for="skinID">Enter SkinID: </label>
+        <input class="skin-input" type="text" placeholder="Enter SkinID">
+        <button onclick="AddSkin()" class="find-btn">Add</button>
+        <a href="../build/How_to_get_skinID.PNG" target="_blank">How To Get SkinID's</a>
+      </div>
+      <div class="package-div">
+				<div class="skin-pack"></div>
+      </div>
+    </div>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Arvo&family=Dosis:wght@400;700&display=swap');
+      * {
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+      }
+      body {
+        background-color: white;
+        font-family: 'Raleway', sans-serif;
+      }
+      .find-btn {
+      	background-color: #28a745;
+        width: 40px;
+        font-size: 1rem;
+        line-height: 1.5;
+        border: none;
+        border-radius: .25rem;
+        color: white;
+        padding: .375rem;
+      }
+      .find-btn:active {
+      	background-color: red;
+      }
+      .nav {
+        background-color: black;
+        color: white;
+        height: 50px;
+        font-family: 'Dosis', sans-serif;
+      }
+      .nav h1 {
+        text-align: center;
+      }
+			.skin-div {
+				margin: 20px;
+			}
+      .skin-label {
+        font-size: 1rem;
+      }
+      .skin-input {
+        font-size: 1rem;
+        line-height: 1.5;
+        padding: .375rem;
+        border: 1px solid #999;
+        border-radius: .25rem;
+      }
+      .package-div {
+      	background-color: #ececec;
+        margin: 20px;
+        height: 100%;
+        border-radius: 3px;
+      }
+      .skin-pack {
+      	background-color: #999;
+        border-radius: 3px;
+      }
+    </style>
+    <script>
+    	  function AddSkin() {
+      		const inputValue = document.getElementsByClassName("skin-input")[0].value;
+          const { ipcRenderer } = require("electron")
+          ipcRenderer.send("setSkin", (inputValue))
+        }
+
+        // const main = document.getElementsByClassName("package-div")[0];
+        // const fuse = new Fuse(Object.keys(data))
+        // input.onkeypress = (e) => {
+        //   main.innerHTML = ""
+        //   const res = fuse.search(inputValue.value)
+        //   console.log(res.length)
+        //   for (const skin of res){
+        //     AddSkin(`${skin.item} (${skin.refIndex})`)
+        //   }
+        // }
+    	  // function AddSkin(txt) {
+        //   // ipcRenderer.send("setSkin", (input.value))\
+        //   const newDiv =  document.createElement("DIV");
+        //   newDiv.innerText = txt
+        //   newDiv.className = "skin-obj"
+        //   main.appendChild(newDiv);
+      	// }
+    </script>
+  </body>
+</html>

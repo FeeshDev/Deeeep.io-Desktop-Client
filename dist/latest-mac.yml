@@ -1,0 +1,12 @@
+version: 1.5.7
+files:
+  - url: Deeeep.io_Desktop_Client-1.5.7-mac.zip
+    sha512: Au++V6EZyTJ1HtDPX+xA1AhjLiVc9iA1/TEoRCEbQWJdALu/mXuvrcwqnvhVyDcACgEdg73EQGM1+wNrHISavQ==
+    size: 77850943
+    blockMapSize: 83288
+  - url: Deeeep.io_Desktop_Client-1.5.7.dmg
+    sha512: HObVbXcN3vnAJF0MpzlAX4B9m5YvALMoGfKw4dOcCSeQjsBktjMl5wzcIYdr4L3cumr/TwOIXBaU9yitaw/jyQ==
+    size: 80657980
+path: Deeeep.io_Desktop_Client-1.5.7-mac.zip
+sha512: Au++V6EZyTJ1HtDPX+xA1AhjLiVc9iA1/TEoRCEbQWJdALu/mXuvrcwqnvhVyDcACgEdg73EQGM1+wNrHISavQ==
+releaseDate: '2021-06-01T15:32:43.992Z'
