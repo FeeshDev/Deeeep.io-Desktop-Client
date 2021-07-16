@@ -1,18 +1,23 @@
 {
    "name": "deeeep.io.desktop.client",
-   "productName": "Deeeep.io Desktop Client",
-   "version": "1.6.5",
+   "version": "1.6.6",
    "author": "SirReadsALot",
    "description": "The Deeeep.io Desktop Client",
    "main": "src/main.js",
    "scripts": {
       "start": "electron .",
-      "pack": "electron-builder --dir",
-      "dist": "electron-builder"
+      "publish": "electron-builder -p always"
    },
    "build": {
+      "publish": [
+         {
+            "provider": "github",
+            "owner": "FeeshDev",
+            "repo": "Deeeep.io-Desktop-Client"
+         }
+      ],
       "productName": "Deeeep.io Desktop Client",
-      "appId": "io.deeeep.desktop",
+      "appId": "com.github.FeeshDev.deeeepiodesktopclient",
       "compression": "normal",
       "files": [
          "package.json",
@@ -34,9 +39,11 @@
    },
    "dependencies": {
       "discord-rpc": "^4.0.1",
-      "electron-updater": "^4.3.9"
+      "electron-updater": "^4.3.9",
+      "fs-extra": "^10.0.0"
    },
    "devDependencies": {
-      "electron": "^12.0.0"
+      "electron": "^12.0.0",
+      "electron-builder": "^22.11.7"
    }
 }
