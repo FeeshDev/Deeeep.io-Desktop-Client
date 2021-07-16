@@ -1,6 +1,7 @@
 const { BrowserWindow, Menu, shell, Notification, app, ipcMain, globalShortcut, dialog, ipcRenderer} = require("electron");
 const { Client } = require("discord-rpc");
 const { autoUpdater } = require("electron-updater");
+const isDev = require('electron-is-dev');
 
 const fs = require("fs-extra"); //! neeeded for fs.remove
 const path = require("path");
@@ -178,58 +179,67 @@ app.once("ready", () => {
     shell.openExternal("https://creators.deeeep.io/skins/pending");
   })
 
-  autoUpdater.on("checking-for-update", async () => {
-    splash.webContents.send("checking");
+  if (isDev) {
+    splash.webContents.once("did-finish-load", () => {
+      splash.webContents.send("not-available");
+    });
+  } else {
+    autoUpdater.on("checking-for-update", async () => {
+      splash.webContents.send("checking");
 
-    var pendingPath = ""; //* Original path
+      var pendingPath = ""; //* Original path
 
-    if (process.platform === "win32") pendingPath = path.resolve(process.env.LOCALAPPDATA, `${packageName}-updater/pending`); //* Windows
-    else pendingPath = path.resolve(process.env.HOME, `${packageName}-updater/pending`); //* Any other platform
-    //else if (process.platform === "linux") pendingPath = path.resolve(process.env.HOME, `${packageName}-updater/pending`);  //* may need to use this
-    //else if (process.platform === "darwin") pendingPath = path.resolve(process.env.HOME, `${packageName}-updater/pending`); //* may need to use this
+      if (process.platform === "win32") pendingPath = path.resolve(process.env.LOCALAPPDATA, `${packageName}-updater/pending`); //* Windows
+      else pendingPath = path.resolve(process.env.HOME, `${packageName}-updater/pending`); //* Any other platform
+      //else if (process.platform === "linux") pendingPath = path.resolve(process.env.HOME, `${packageName}-updater/pending`);  //* may need to use this
+      //else if (process.platform === "darwin") pendingPath = path.resolve(process.env.HOME, `${packageName}-updater/pending`); //* may need to use this
 
-    try {
-      await fs.remove(pendingPath) //! Await removal
-    } catch (err) {
-      console.error(err)
-    }
-  });
-
-  autoUpdater.on("update-available", () => {
-    const dialogUpdate = {
-      type: "question",
-      buttons: ["Restart", "Cancel"],
-      noLink: true,
-      icon: "./build/Logo_182x187.png",
-      title: "D.D.C Updater",
-      detail: "There is a new update, do you want to update the D.D.C?"
-    }
-    dialog.showMessageBox(dialogUpdate).then((returnValue) => {
-      if (returnValue.response === 0) { 
-        autoUpdater.quitAndInstall();
+      try {
+        await fs.remove(pendingPath); //! Await removal
+      } catch (err) {
+        console.error(err)
       }
-    })
-  })
-  autoUpdater.on("update-not-available", () => {
-    splash.webContents.send("not-available")
-  })
-  autoUpdater.on('error', message => {
-    console.error('There was a problem updating the D.D.C')
-    console.error(message)
-  })
+    });
+
+    autoUpdater.on("update-available", () => {
+      const dialogUpdate = {
+        type: "question",
+        buttons: ["Restart", "Cancel"],
+        noLink: true,
+        icon: "./build/Logo_182x187.png",
+        title: "D.D.C Updater",
+        detail: "There is a new update, do you want to update the D.D.C?"
+      }
+      dialog.showMessageBox(dialogUpdate).then((returnValue) => {
+        if (returnValue.response === 0) {
+          autoUpdater.quitAndInstall();
+        }
+      })
+    });
+
+    autoUpdater.on("update-not-available", () => {
+      splash.webContents.send("not-available");
+    });
+
+    autoUpdater.on('error', message => {
+      console.error('There was a problem updating the D.D.C')
+      console.error(message)
+    });
+
+    autoUpdater.checkForUpdates();
+  }
 
   ipcMain.on("stop-splash", () => {
-    splash.destroy(),
-    createWindow()
-  })
+    createWindow();
+    splash.destroy();
+  });
+
   ipcMain.on("download-the-update", () => {
     setTimeout(() => {
-      app.quitAndInstall()
+      app.quitAndInstall();
     }, 3000) 
     splash.webContents.send("gonna-download")
-  })
-
-  autoUpdater.checkForUpdates()
+  });
 });
 
 var rpc = new Client({
