@@ -13,18 +13,19 @@
 	<span class="myProgress">
 		<h3 class="text_check">Checking for updates &emsp;</h3>
 		<div class="loader"></div>
-	</span> 
-    <div id="myProgressDOWNLOAD">
-        <div id="myBar">5%</div>
-    </div>
+	</span>
+	<div id="myProgressDOWNLOAD">
+		<div id="myBar">5%</div>
+	</div>
 	<style>
-	@import url("https://fonts.googleapis.com/css2?family=Arvo&family=Dosis:wght@400;700&display=swap");
+		@import url("https://fonts.googleapis.com/css2?family=Arvo&family=Dosis:wght@400;700&display=swap");
 
 		* {
 			padding: 0px;
 			margin: 0px;
 			overflow: hidden;
 		}
+
 		img {
 			width: 100%;
 			height: 100%;
@@ -38,59 +39,66 @@
 			-ms-user-select: none;
 		}
 
-		 .myProgress {
-		 	display: flex;
-		 	top: 80%;
-		 	left: 50%;
-		 	transform: translateX(-50%);
+		.myProgress {
+			display: flex;
+			top: 80%;
+			left: 50%;
+			transform: translateX(-50%);
 			position: absolute;
-		 	z-index: 2;
-		 	font-size: 40px;
-		 }
+			z-index: 2;
+			font-size: 40px;
+		}
 
-	     .loader {
-		 	border: 10px solid #f3f3f3; /* Light grey */
-		 	border-top: 10px solid #3498db; /* Blue */
-		 	border-radius: 40px;
-		 	width: 40px;
-		 	height: 40px;
-		 	animation: spin 2s linear infinite;
-		 }
+		.loader {
+			border: 10px solid #f3f3f3;
+			/* Light grey */
+			border-top: 10px solid #3498db;
+			/* Blue */
+			border-radius: 40px;
+			width: 40px;
+			height: 40px;
+			animation: spin 2s linear infinite;
+		}
 
-		 @keyframes spin {
-		 	0% { transform: rotate(0deg); }
-		 	100% { transform: rotate(360deg); }
-		 }
-		 .myProgress h3 {
-		 	font-family: 'Dosis', sans-serif;
-		 	font-weight: bold;
-		 	color: white;
-		 } 
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+		.myProgress h3 {
+			font-family: 'Dosis', sans-serif;
+			font-weight: bold;
+			color: white;
+		}
 
 		#myProgressDOWNLOAD {
-             width: 92%;
-             background-color: #ddd;
-             position: absolute;
-             z-index: 2;
-         }
+			width: 92%;
+			background-color: #ddd;
+			position: absolute;
+			z-index: 2;
+		}
 
-        #myBar {
-             font-family: 'Dosis', sans-serif;
-             width: 5%;
-             height: 50px;
-             background-color: #04AA6D;
-             text-align: center;
-             line-height: 50px;
-             color: white;
-             font-size: 40px;
-             font-weight: bold;
-             position: absolute;
-             z-index: 2;
-         }
+		#myBar {
+			font-family: 'Dosis', sans-serif;
+			width: 5%;
+			height: 50px;
+			background-color: #04AA6D;
+			text-align: center;
+			line-height: 50px;
+			color: white;
+			font-size: 40px;
+			font-weight: bold;
+			position: absolute;
+			z-index: 2;
+		}
 	</style>
-	<script src="https://code.jquery.com/jquery-3.6.0.js" 
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script>
 		const { ipcRenderer } = require("electron");
 		const text_check = document.getElementsByClassName("text_check")
@@ -110,13 +118,13 @@
 
 		ipcRenderer.on("available", () => {
 			$(".myProgress").hide()
-			ipcMain.send("download-the-update")
+			ipcRenderer.send("download-the-update")
 			text_check.innerHTML = "New update found"
 		})
 
 		ipcRenderer.on("not-available", () => {
 			text_check.innerHTML = "No update found"
-			ipcMain.send("stop-splash")
+			ipcRenderer.send("stop-splash")
 			$(".myProgress").hide()
 			$("#myProgressDOWNLOAD").hide()
 		})
@@ -124,27 +132,27 @@
 		ipcRenderer.on("gonna-download", () => {
 			$("#myProgressDOWNLOAD").show()
 			var i = 0;
-				function move() {
-        			if (i == 0) {
-            			i = 1;
-            			var elem = document.getElementById("myBar");
-            			var width = 10;
-            			var id = setInterval(frame, 60);
+			function move() {
+				if (i == 0) {
+					i = 1;
+					var elem = document.getElementById("myBar");
+					var width = 10;
+					var id = setInterval(frame, 60);
 
-            	function frame() {
-               			if (width >= 100) {
-                			clearInterval(id);
-                			i = 0;
-            			} else {
-                			width++;
-                			elem.style.width = width + "%";
-                			elem.innerHTML = width + "%";
-            			}
-        			}
-    			}
-			}	
-	})
+					function frame() {
+						if (width >= 100) {
+							clearInterval(id);
+							i = 0;
+						} else {
+							width++;
+							elem.style.width = width + "%";
+							elem.innerHTML = width + "%";
+						}
+					}
+				}
+			}
+		})
 	</script>
 </body>
-</html>
 
+</html>
